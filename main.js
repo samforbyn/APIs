@@ -1,4 +1,5 @@
 const buttonSelect = document.querySelector("button")
+const starButton = document.getElementById("starships")
 
 const buttText = () => {
     axios.get("https://swapi.dev/api/planets/?search=alderaan")
@@ -28,4 +29,27 @@ const buttText = () => {
         })
 }
 
+const printStarships = () => {
+    axios.get('https://swapi.dev/api/starships')
+    .then((response) => {
+        console.log(response.data)
+        const {results} = response.data
+        const milFalc = results[4]
+        console.log(milFalc)
+        const {films} = milFalc
+        console.log(films)
+        for(let i = 0; i < films.length; i++){
+            urlList = films[i]
+            axios.get(urlList)
+                .then((response) => {
+                    let makeDiv = document.createElement("h2")
+                    let bodySelect = document.querySelector("body")
+                    makeDiv.textContent = response.data.title
+                    bodySelect.appendChild(makeDiv)
+                })
+        }
+    })
+}
+
 buttonSelect.addEventListener("click", buttText)
+starButton.addEventListener("click", printStarships)
